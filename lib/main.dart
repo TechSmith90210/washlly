@@ -11,6 +11,7 @@ import 'home/homePage.dart';
   WidgetsFlutterBinding.ensureInitialized();
   sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
+  print('initialized :)))');
   runApp(const MyApp());
 }
 

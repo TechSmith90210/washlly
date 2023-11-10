@@ -31,7 +31,8 @@ class _allUsers extends State<allUsers> {
         slivers: [
           SliverPersistentHeader(pinned: true, delegate: SearchBoxDelegate()),
           StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection("services").snapshots(),
+            stream:
+                FirebaseFirestore.instance.collection("services").snapshots(),
             builder: (context, dataSnapshot) {
               return !dataSnapshot.hasData
                   ? SliverToBoxAdapter(
@@ -39,17 +40,18 @@ class _allUsers extends State<allUsers> {
                         child: circularProgress(),
                       ),
                     )
-                  : SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 1,
-                      staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
-                        ItemModel model = ItemModel.fromJson(
-                            dataSnapshot.data?.docs[index].data()
-                                as Map<String, dynamic>);
-                        return sourceInfo(model, context,
-                            background: Colors.black);
-                      },
-                      itemCount: dataSnapshot.data!.docs.length,
+                  : StaggeredGrid.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      children: List.generate(
+                        dataSnapshot.data!.docs.length,
+                        (index) => sourceInfo(
+                          ItemModel.fromJson(dataSnapshot.data!.docs[index]
+                              .data() as Map<String, dynamic>),
+                          context,
+                          background: Colors.black,
+                        ),
+                      ),
                     );
             },
           ),

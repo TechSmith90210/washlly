@@ -23,6 +23,8 @@ _timeToString(Prices? price) {
       return "140PHP";
     case Prices.largePrice:
       return "180PHP";
+    case null:
+      // TODO: Handle this case.
   }
 }
 

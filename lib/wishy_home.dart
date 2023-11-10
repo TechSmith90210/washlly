@@ -93,14 +93,14 @@ class _register_wishy extends State<register_wishy> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      registerFunciton();
+                      registerFunction();
                     },
                     child: const Text(
                       "Register",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.indigoAccent,
+                      backgroundColor: Colors.indigoAccent,
                       padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
@@ -137,7 +137,7 @@ class _register_wishy extends State<register_wishy> {
     );
   }
 
-  Future<void> registerFunciton() async {
+  Future<void> registerFunction() async {
     _password.text == _confirm_password.text
         ? _email.text.isNotEmpty &&
                 _password.text.isNotEmpty &&
@@ -145,7 +145,7 @@ class _register_wishy extends State<register_wishy> {
                 _phone_number.text.isNotEmpty &&
                 _full_name.text.isNotEmpty
             ? uploadDataToStorage()
-            : displayDialog("Please Fill up the Complate Form ")
+            : displayDialog("Please Fill up the Complete Form ")
         : displayDialog("Password is not Matching");
   }
 

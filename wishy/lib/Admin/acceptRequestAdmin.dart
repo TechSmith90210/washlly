@@ -49,17 +49,19 @@ class _acceptBookingAdmin extends State<acceptBookingAdmin> {
                         child: circularProgress(),
                       ),
                     )
-                  : SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 1,
-                      staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
-                        ItemModel model = ItemModel.fromJson(
-                            dataSnapshot.data?.docs[index].data()
-                                as Map<String, dynamic>);
-                        return sourceInfo(model, context,
-                            background: Colors.black);
-                      },
-                      itemCount: dataSnapshot.data!.docs.length,
+                  : StaggeredGrid.count(
+                      crossAxisCount: 1, // The number of columns in the grid.
+                      children: [
+                        // Loop through all of the items in the grid.
+                        for (var i = 0; i < dataSnapshot.data!.docs.length; i++)
+                          sourceInfo(
+                              // Get the item model for the current tile.
+                              ItemModel.fromJson(dataSnapshot.data?.docs[i]
+                                  .data() as Map<String, dynamic>),
+                              // Build the sourceInfo widget for the current tile.
+                              context,
+                              background: Colors.black),
+                      ],
                     );
             },
           ),
@@ -249,7 +251,7 @@ class _acceptBookingAdmin extends State<acceptBookingAdmin> {
                         style: TextStyle(color: Colors.white, fontSize: 13.0),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
+                        backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5), // <-- Radius
                         ),
@@ -268,7 +270,7 @@ class _acceptBookingAdmin extends State<acceptBookingAdmin> {
                         style: TextStyle(color: Colors.white, fontSize: 13.0),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
+                        backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5), // <-- Radius
                         ),

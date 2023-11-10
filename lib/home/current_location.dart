@@ -28,6 +28,10 @@ class MapSampleState extends State<MapSample> {
   var user = sharedPreferences?.getString("uid");
 
   void locatePostion() async {
+    bool islocationserviceenabled = await Geolocator.isLocationServiceEnabled();
+    await Geolocator.checkPermission();
+    await Geolocator.requestPermission();
+
     Position positionNew = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     CurrentPosition = positionNew;
@@ -37,12 +41,12 @@ class MapSampleState extends State<MapSample> {
         await placemarkFromCoordinates(position!.latitude, position!.longitude);
 
     Placemark Pmark = placemarks![0];
-    String newCUrrentAddress =
+    String newCurrentAddress =
         '${Pmark.subThoroughfare} ${Pmark.thoroughfare}, ${Pmark.subLocality} ${Pmark.locality}, ${Pmark.subAdministrativeArea}, ${Pmark.administrativeArea} ${Pmark.postalCode}, ${Pmark.country}';
 
-    locationAssigned = newCUrrentAddress.toString();
+    locationAssigned = newCurrentAddress.toString();
     setState(() {
-      locationAssigned = newCUrrentAddress.toString();
+      locationAssigned = newCurrentAddress.toString();
     });
 
     latLatPostion = LatLng(positionNew.latitude, positionNew.longitude);

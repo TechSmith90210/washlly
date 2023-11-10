@@ -179,19 +179,26 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
     // This will get all the admins info
     FirebaseFirestore.instance
         .collection("admins")
+
         .get()
         .then((snapshot) async {
       // this to seperetate it fomr each other
-      snapshot.docs.forEach((result)  {
+      for (var result in snapshot.docs) {
         if (result.data()["id"] != _adminIDTextEditingController.text.trim()) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Your ID is not Correct"),));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Your ID is not Correct"),
+          ));
         } else if (result.data()["password"] !=
             _passwordTextEditingController.text.trim()) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Your Password is not Correct"),));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Your Password is not Correct"),
+          ));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Welcome Dear Admin, ")));
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Welcome Dear Admin, ")));
 
-          Route route = MaterialPageRoute(builder: (c) => const adminHomePage());
+          Route route =
+              MaterialPageRoute(builder: (c) => const adminHomePage());
           Navigator.pushReplacement(context, route);
           setState(() {
             _adminIDTextEditingController.text = "";
@@ -199,7 +206,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
           });
         }
         print("This is the ID " + result.data()["id"]);
-      });
+      }
     });
   }
 }

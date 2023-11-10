@@ -77,7 +77,7 @@ class _login_page extends State<login_page> {
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.indigoAccent,
+                        backgroundColor: Colors.indigoAccent,
                         padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),

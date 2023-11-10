@@ -19,14 +19,14 @@ class _time_picker extends State<time_picker> {
   TimeOfDay selectedTime = TimeOfDay.now();
   DateTime selectDate = DateTime.now();
   final firstDate = DateTime.now();
-  final lastDate = DateTime(2022, 12);
+  final lastDate = DateTime.now();
   final selectTime = TimeOfDay.now();
   var timeAndDate = '';
 
   @override
   Widget build(BuildContext context) {
     timeAndDate =
-        "${selectDate.year}:${selectDate.month}:${selectDate.day} - ${selectedTime.hour}:${selectedTime.minute}";
+    "${selectDate.year}:${selectDate.month}:${selectDate.day} - ${selectedTime.hour}:${selectedTime.minute}";
     setState(() {
       timeAndDate;
     });
@@ -83,7 +83,7 @@ class _time_picker extends State<time_picker> {
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  backgroundColor: Colors.blue,
                   fixedSize: Size(MediaQuery.of(context).size.width, 47),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(1),
@@ -138,9 +138,9 @@ class _time_picker extends State<time_picker> {
     await FirebaseFirestore.instance.collection("services").doc(user).update({
       // "timeAndDate": timeAndDate.toString(),
       "selectedDate":
-          "${selectDate.year}:${selectDate.month}:${selectDate.day} - ${selectedTime.format(context)}",
+      "${selectDate.year}:${selectDate.month}:${selectDate.day} - ${selectedTime.format(context)}",
       "timeAndDate": timeAndDate =
-          "${selectDate.year}:${selectDate.month}:${selectDate.day} - ${selectedTime.format(context)}",
+      "${selectDate.year}:${selectDate.month}:${selectDate.day} - ${selectedTime.format(context)}",
       "fullName": fullName.toString(),
       "Email": Email.toString(),
       "PhoneNumber": PhoneNumber.toString(),

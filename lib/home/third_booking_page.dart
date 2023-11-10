@@ -21,6 +21,8 @@ _timeToString(Prices? price) {
       return "210PHP (Crossover)";
     case Prices.largePrice:
       return "260PHP (SUV)";
+    case null:
+      // TODO: Handle this case.
   }
 }
 

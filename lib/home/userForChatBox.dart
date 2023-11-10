@@ -45,19 +45,18 @@ class _userForChtBox extends State<userForChtBox> {
                         child: LinearProgressIndicator(),
                       ),
                     )
-                  : SliverStaggeredGrid.countBuilder(
+                  : StaggeredGrid.count(
                       crossAxisCount: 1,
-                      staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
+                      children: List.generate(dataSnapshot.data!.docs.length,
+                          (index) {
                         ItemModel model = ItemModel.fromJson(
-                            dataSnapshot.data?.docs[index].data()
+                            dataSnapshot.data!.docs[index].data()
                                 as Map<String, dynamic>);
                         userSharedPrefrences = model.adminName;
                         // sharedPreferences!
                         //     .setString("adminName", userSharedPrefrences);
                         return dataShowing(model, context);
-                      },
-                      itemCount: dataSnapshot.data!.docs.length,
+                      }),
                     );
             },
           ),

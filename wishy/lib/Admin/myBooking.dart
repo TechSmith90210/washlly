@@ -46,24 +46,22 @@ class _AdminMyBooking extends State<AdminMyBooking> {
                         child: circularProgress(),
                       ),
                     )
-                  : SliverStaggeredGrid.countBuilder(
+                  : StaggeredGrid.count(
                       crossAxisCount: 1,
-                      staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
+                      children: List.generate(dataSnapshot.data!.docs.length,
+                          (index) {
                         ItemModel model = ItemModel.fromJson(
-                            dataSnapshot.data?.docs[index].data()
+                            dataSnapshot.data!.docs[index].data()
                                 as Map<String, dynamic>);
 
-                        if(model.serviceRating != "null"){
+                        if (model.serviceRating != "null") {
                           var raing = model.serviceRating;
                           conver = double.parse(raing);
                         }
 
-
                         return sourceInfo(model, context,
                             background: Colors.black);
-                      },
-                      itemCount: dataSnapshot.data!.docs.length,
+                      }),
                     );
             },
           ),

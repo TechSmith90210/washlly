@@ -55,18 +55,20 @@ class _acceptBookingAdmin extends State<acceptBookingAdmin> {
                         child: circularProgress(),
                       ),
                     )
-                  : SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 1,
-                      staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
-                        ItemModel model = ItemModel.fromJson(
-                            dataSnapshot.data?.docs[index].data()
-                                as Map<dynamic, dynamic>);
-                        return sourceInfo(model, context,
-                            background: Colors.black);
-                      },
-                      itemCount: dataSnapshot.data!.docs.length,
-                    );
+                  : StaggeredGrid.count(
+                crossAxisCount: 1, // The number of columns in the grid.
+                children: [
+                  // Loop through all of the items in the grid.
+                  for (var i = 0; i < dataSnapshot.data!.docs.length; i++)
+                    sourceInfo(
+                      // Get the item model for the current tile.
+                        ItemModel.fromJson(dataSnapshot.data?.docs[i]
+                            .data() as Map<String, dynamic>),
+                        // Build the sourceInfo widget for the current tile.
+                        context,
+                        background: Colors.black),
+                ],
+              );
             },
           ),
         ],
