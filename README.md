@@ -1,4 +1,4 @@
-# wishy
+# wishy updated version by TechSmith90210
 
 Flutter app for car wash servcies, the client can book time and date to wash his car.
 
