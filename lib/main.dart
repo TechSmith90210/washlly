@@ -7,14 +7,13 @@ import 'package:wishy/splashScreen/splashScreen.dart';
 import 'package:wishy/wishy_home.dart';
 import 'home/homePage.dart';
 
- Future <void> main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   print('initialized :)))');
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

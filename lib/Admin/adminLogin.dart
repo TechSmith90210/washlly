@@ -179,10 +179,9 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
     // This will get all the admins info
     FirebaseFirestore.instance
         .collection("admins")
-
         .get()
         .then((snapshot) async {
-      // this to seperetate it fomr each other
+      // this to separate it from each other
       for (var result in snapshot.docs) {
         if (result.data()["id"] != _adminIDTextEditingController.text.trim()) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

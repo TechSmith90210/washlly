@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wishy/DialogBox/errorDialog.dart';
@@ -93,7 +94,7 @@ class MapSampleState extends State<MapSample> {
             left: 90,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                backgroundColor: Colors.blue,
                 fixedSize: const Size(170, 40),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),

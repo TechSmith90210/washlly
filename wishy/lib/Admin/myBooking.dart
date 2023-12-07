@@ -46,22 +46,47 @@ class _AdminMyBooking extends State<AdminMyBooking> {
                         child: circularProgress(),
                       ),
                     )
-                  : StaggeredGrid.count(
-                      crossAxisCount: 1,
-                      children: List.generate(dataSnapshot.data!.docs.length,
-                          (index) {
-                        ItemModel model = ItemModel.fromJson(
+                  : SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: double.infinity,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          ItemModel model = ItemModel.fromJson(
                             dataSnapshot.data!.docs[index].data()
-                                as Map<String, dynamic>);
+                                as Map<String, dynamic>,
+                          );
 
-                        if (model.serviceRating != "null") {
-                          var raing = model.serviceRating;
-                          conver = double.parse(raing);
-                        }
+                          if (model.serviceRating != "null") {
+                            var rating = model.serviceRating;
+                            conver = double.parse(rating);
+                          }
 
-                        return sourceInfo(model, context,
-                            background: Colors.black);
-                      }),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                gradient: const LinearGradient(
+                                  colors: [Colors.blue, Colors.blueAccent],
+                                  begin: FractionalOffset(0.0, 0.0),
+                                  end: FractionalOffset(1.0, 0.0),
+                                  stops: [0.0, 1.0],
+                                  tileMode: TileMode.clamp,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(7.0),
+                                child: sourceInfo(model, context,
+                                    background: Colors.black),
+                              ),
+                            ),
+                          );
+                        },
+                        childCount: dataSnapshot.data!.docs.length,
+                      ),
                     );
             },
           ),

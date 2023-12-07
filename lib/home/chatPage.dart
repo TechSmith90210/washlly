@@ -94,31 +94,26 @@ class _displayingMessage extends State<displayingMessage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("users")
-            .doc(currentUserUid.toString())
-            .collection("chats")
-            .orderBy("time", descending: true)
-            // .where("name", isEqualTo: gettingName)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      stream: FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserUid.toString())
+          .collection("chats")
+          .orderBy("time", descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-          return ListView.builder(
-              reverse: true,
-              itemCount: snapshot.data!.docs.length,
-              shrinkWrap: true,
-              primary: true,
-              physics: const ScrollPhysics(),
-              itemBuilder: (context, i) {
-                QueryDocumentSnapshot x = snapshot.data!.docs[i];
-                if (x['user'] == currentUserUid) {
-                  return ListTile(
-                      title: Column(
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, i) {
+              QueryDocumentSnapshot x = snapshot.data!.docs[i];
+              if (x['user'] == currentUserUid) {
+                return ListTile(
+                  title: Column(
                     crossAxisAlignment: gettingName == x['name']
                         ? CrossAxisAlignment.end
                         : CrossAxisAlignment.start,
@@ -143,10 +138,17 @@ class _displayingMessage extends State<displayingMessage> {
                         ),
                       ),
                     ],
-                  ));
-                }
-                return const Text("");
-              });
-        });
+                  ),
+                );
+              }
+              return const SizedBox(); // Return an empty SizedBox if you don't want to display anything for non-matching conditions.
+            },
+            childCount: snapshot.data!.docs.length,
+          ),
+        );
+      },
+    );
   }
 }
+
+

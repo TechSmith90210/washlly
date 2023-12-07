@@ -39,33 +39,32 @@ class _AdminMyBooking extends State<AdminMyBooking> {
           SliverPersistentHeader(pinned: true, delegate: SearchBoxDelegate()),
           StreamBuilder<QuerySnapshot>(
             stream:
-            FirebaseFirestore.instance.collection("services").snapshots(),
+                FirebaseFirestore.instance.collection("services").snapshots(),
             builder: (context, dataSnapshot) {
               return !dataSnapshot.hasData
                   ? SliverToBoxAdapter(
-                child: Center(
-                  child: circularProgress(),
-                ),
-              )
-                  : StaggeredGrid.count(
-                crossAxisCount: 1,
-                children: List.generate(
-                  dataSnapshot.data!.docs.length,
-                      (index) {
-                    ItemModel model = ItemModel.fromJson(
-                        dataSnapshot.data?.docs[index].data() as Map<String, dynamic>);
+                      child: Center(
+                        child: circularProgress(),
+                      ),
+                    )
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          ItemModel model = ItemModel.fromJson(
+                              dataSnapshot.data?.docs[index].data()
+                                  as Map<String, dynamic>);
 
-                    if (model.serviceRating != "null") {
-                      var raing = model.serviceRating;
-                      conver = double.parse(raing);
-                    }
+                          if (model.serviceRating != "null") {
+                            var rating = model.serviceRating;
+                            conver = double.parse(rating);
+                          }
 
-                    return sourceInfo(model, context,
-                        background: Colors.black);
-                  },
-                ),
-              );
-
+                          return sourceInfo(model, context,
+                              background: Colors.black);
+                        },
+                        childCount: dataSnapshot.data!.docs.length,
+                      ),
+                    );
             },
           ),
         ],
@@ -242,7 +241,7 @@ class _AdminMyBooking extends State<AdminMyBooking> {
                             itemSize: 25,
                             rating: conver ?? '',
                             itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 2.0),
+                                const EdgeInsets.symmetric(horizontal: 2.0),
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -278,4 +277,3 @@ class _AdminMyBooking extends State<AdminMyBooking> {
     });
   }
 }
-

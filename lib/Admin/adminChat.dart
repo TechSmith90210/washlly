@@ -55,24 +55,29 @@ class _adminChatDisplayUsers extends State<adminChatDisplayUsers> {
             builder: (context, dataSnapshot) {
               return !dataSnapshot.hasData
                   ? SliverToBoxAdapter(
-                child: Center(
-                  child: circularProgress(),
-                ),
-              )
-                  : StaggeredGrid.count(
-                crossAxisCount: 1, // The number of columns in the grid.
-                children: [
-                  // Loop through all of the items in the grid.
-                  for (var i = 0; i < dataSnapshot.data!.docs.length; i++)
-                    sourceInfo(
-                      // Get the item model for the current tile.
-                        ItemModel.fromJson(dataSnapshot.data?.docs[i]
-                            .data() as Map<String, dynamic>),
-                        // Build the sourceInfo widget for the current tile.
-                        context,
-                        background: Colors.black),
-                ],
-              );
+                      child: Center(
+                        child: circularProgress(),
+                      ),
+                    )
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          // Get the item model for the current index.
+                          var itemModel = ItemModel.fromJson(
+                            dataSnapshot.data?.docs[index].data()
+                                as Map<String, dynamic>,
+                          );
+
+                          // Build the sourceInfo widget for the current index.
+                          return sourceInfo(
+                            itemModel,
+                            context,
+                            background: Colors.black,
+                          );
+                        },
+                        childCount: dataSnapshot.data!.docs.length,
+                      ),
+                    );
             },
           ),
         ],
@@ -160,20 +165,23 @@ class _adminChatDisplayUsers extends State<adminChatDisplayUsers> {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-
+                    style: ElevatedButton.styleFrom(),
+                    child: Text(
+                      "Message",
                     ),
-                    child:  Text("Message",),
-                    onPressed: (){
-
+                    onPressed: () {
                       print("ths is clicked ${model.uid};");
                       setState(() {
                         ss = model.uid;
                       });
-                    // Route route = MaterialPageRoute(builder: (c) => chatAdminBox());
-                    // Navigator.push(context, route);
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=> chatAdminBox(modelData: ss,)), (route) => true);
-
+                      // Route route = MaterialPageRoute(builder: (c) => chatAdminBox());
+                      // Navigator.push(context, route);
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => chatAdminBox(
+                                    modelData: ss,
+                                  )),
+                          (route) => true);
                     },
                   ),
                 ),

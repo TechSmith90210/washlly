@@ -40,14 +40,17 @@ class _allUsers extends State<allUsers> {
                         child: circularProgress(),
                       ),
                     )
-                  : StaggeredGrid.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
+                  : SliverGrid.count(
+                      crossAxisCount: 1,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
                       children: List.generate(
                         dataSnapshot.data!.docs.length,
                         (index) => sourceInfo(
-                          ItemModel.fromJson(dataSnapshot.data!.docs[index]
-                              .data() as Map<String, dynamic>),
+                          ItemModel.fromJson(
+                            dataSnapshot.data!.docs[index].data()
+                                as Map<String, dynamic>,
+                          ),
                           context,
                           background: Colors.black,
                         ),
@@ -90,7 +93,7 @@ class _allUsers extends State<allUsers> {
               const SizedBox(
                 width: 15.0,
               ),
-              Expanded(
+              Flexible(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -99,36 +102,30 @@ class _allUsers extends State<allUsers> {
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Expanded(
-                            child: Text(
-                              "Name: " + model.fullName.toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
+                          Text(
+                            "Name: " + model.fullName.toString(),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 15.0),
                           ),
                         ],
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Expanded(
-                            child: Text(
-                              "Email: " + model.Email.toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
+                          Text(
+                            "Email: " + model.Email.toString(),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 15.0),
                           ),
                         ],
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Expanded(
-                            child: Text(
-                              "PhoneNumber: " + model.PhoneNumber,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
+                          Text(
+                            "PhoneNumber: " + model.PhoneNumber,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 15.0),
                           ),
                         ],
                       ),

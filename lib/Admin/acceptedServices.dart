@@ -70,20 +70,23 @@ class _allAcceptedServices extends State<allAcceptedServices> {
                         child: circularProgress(),
                       ),
                     )
-                  : StaggeredGrid.count(
-                crossAxisCount: 1, // The number of columns in the grid.
-                children: [
-                  // Loop through all of the items in the grid.
-                  for (var i = 0; i < dataSnapshot.data!.docs.length; i++)
-                    sourceInfo(
-                      // Get the item model for the current tile.
-                        ItemModel.fromJson(dataSnapshot.data?.docs[i]
-                            .data() as Map<String, dynamic>),
-                        // Build the sourceInfo widget for the current tile.
-                        context,
-                        background: Colors.black),
-                ],
-              );
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          ItemModel model = ItemModel.fromJson(
+                            dataSnapshot.data?.docs[index].data()
+                                as Map<String, dynamic>,
+                          );
+
+                          return sourceInfo(
+                            model,
+                            context,
+                            background: Colors.black,
+                          );
+                        },
+                        childCount: dataSnapshot.data!.docs.length,
+                      ),
+                    );
             },
           ),
         ],
@@ -282,7 +285,7 @@ class _allAcceptedServices extends State<allAcceptedServices> {
                         style: TextStyle(color: Colors.white, fontSize: 12.0),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
+                        backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5), // <-- Radius
                         ),

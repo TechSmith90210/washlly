@@ -14,7 +14,6 @@ class allUsers extends StatefulWidget {
 class _allUsers extends State<allUsers> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(),
@@ -40,20 +39,22 @@ class _allUsers extends State<allUsers> {
                         child: circularProgress(),
                       ),
                     )
-                  : StaggeredGrid.count(
-                crossAxisCount: 1, // The number of columns in the grid.
-                children: [
-                  // Loop through all of the items in the grid.
-                  for (var i = 0; i < dataSnapshot.data!.docs.length; i++)
-                    sourceInfo(
-                      // Get the item model for the current tile.
-                        ItemModel.fromJson(dataSnapshot.data?.docs[i]
-                            .data() as Map<String, dynamic>),
-                        // Build the sourceInfo widget for the current tile.
-                        context,
-                        background: Colors.black),
-                ],
-              );
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: sourceInfo(
+                            ItemModel.fromJson(
+                              dataSnapshot.data!.docs[index].data()
+                                  as Map<String, dynamic>,
+                            ),
+                            context,
+                            background: Colors.black,
+                          ),
+                        ),
+                        childCount: dataSnapshot.data!.docs.length,
+                      ),
+                    );
             },
           ),
         ],
@@ -66,7 +67,7 @@ class _allUsers extends State<allUsers> {
     return InkWell(
       splashColor: Colors.pink,
       child: Padding(
-        padding: const EdgeInsets.all(7.0),
+        padding: const EdgeInsets.all(10.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -78,66 +79,52 @@ class _allUsers extends State<allUsers> {
               tileMode: TileMode.clamp,
             ),
           ),
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 10.0,
-              ),
-              const Icon(
-                Icons.account_circle,
-                size: 60,
-                color: Colors.white70,
-              ),
-              const SizedBox(
-                width: 15.0,
-              ),
-              Expanded(
-                child: Padding(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 10.0,
+                ),
+                const Icon(
+                  Icons.account_circle,
+                  size: 60,
+                  color: Colors.white70,
+                ),
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Name: " + model.fullName.toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "Name: " + model.fullName.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                        ),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Email: " + model.Email.toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "Email: " + model.Email.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                        ),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "PhoneNumber: " + model.PhoneNumber,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "PhoneNumber: " + model.PhoneNumber,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
