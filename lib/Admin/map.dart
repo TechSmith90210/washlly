@@ -21,7 +21,7 @@ class map extends StatefulWidget {
 }
 
 class _map extends State<map> {
-  GoogleMapController? mapController; //contrller for Google map
+  GoogleMapController? mapController; //controller for Google map
   PolylinePoints polylinePoints = PolylinePoints();
 
   String googleAPiKey = "AIzaSyAHG2d6iec_MmuSZTSKVxmXvX9Fgy4qvnQ";
@@ -46,7 +46,7 @@ class _map extends State<map> {
 
     LatLng endLocation = LatLng(widget.userlat, widget.userlong);
     markers.add(Marker(
-      //add distination location marker
+      //add destination location marker
       markerId: MarkerId(endLocation.toString()),
       position: endLocation, //position of marker
       infoWindow: InfoWindow(

@@ -135,7 +135,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 25.0),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Colors.deepPurpleAccent,
+                backgroundColor: Colors.deepPurpleAccent,
                 padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12), // <-- Radius

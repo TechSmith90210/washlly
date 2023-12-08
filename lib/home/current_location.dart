@@ -26,6 +26,7 @@ class MapSampleState extends State<MapSample> {
   late GoogleMapController newGoogleMapController;
   late LatLng latLatPostion;
   var user = sharedPreferences?.getString("uid");
+  TextEditingController locationController = TextEditingController();
 
   void locatePostion() async {
     bool islocationserviceenabled = await Geolocator.isLocationServiceEnabled();
@@ -33,7 +34,7 @@ class MapSampleState extends State<MapSample> {
     await Geolocator.requestPermission();
 
     Position positionNew = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.low);
     CurrentPosition = positionNew;
 
     position = positionNew;
@@ -58,13 +59,12 @@ class MapSampleState extends State<MapSample> {
   }
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.427934534, -122.085),
+    target: LatLng(40.730610, -73.935242),
     zoom: 14.4744,
   );
 
   late Position CurrentPosition;
   late var geoLocator = Geolocator();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,8 +87,6 @@ class MapSampleState extends State<MapSample> {
               onMapCreated: (GoogleMapController controller) {
                 _controllerGoogleMap.complete(controller);
                 newGoogleMapController = controller;
-
-                locatePostion();
               },
             ),
           ),

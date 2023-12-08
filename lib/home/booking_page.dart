@@ -270,7 +270,7 @@ class _booking_page extends State<booking_page> {
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        backgroundColor: Colors.blue,
                         fixedSize: const Size(110, 40),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(1)),

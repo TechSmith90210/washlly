@@ -34,14 +34,9 @@ class _chatPage extends State<chatPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          //Displaying Messgaes
-          const SizedBox(
-            height: 550,
-            child: SingleChildScrollView(
-              physics: ScrollPhysics(),
-              reverse: true,
-              child: displayingMessage(),
-            ),
+          // Displaying Messgaes
+          Expanded(
+            child: displayingMessage(),
           ),
           Container(
             decoration: const BoxDecoration(
@@ -98,7 +93,7 @@ class _displayingMessage extends State<displayingMessage> {
           .collection("users")
           .doc(currentUserUid.toString())
           .collection("chats")
-          .orderBy("time", descending: true)
+          .orderBy("time")
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -107,48 +102,51 @@ class _displayingMessage extends State<displayingMessage> {
           );
         }
 
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
+        return CustomScrollView(
+          reverse: true,
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
                 (context, i) {
-              QueryDocumentSnapshot x = snapshot.data!.docs[i];
-              if (x['user'] == currentUserUid) {
-                return ListTile(
-                  title: Column(
-                    crossAxisAlignment: gettingName == x['name']
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        color: gettingName == x['name']
-                            ? Colors.blue.withOpacity(0.2)
-                            : Colors.amber.withOpacity(0.1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(x['msg']),
-                            Text(
-                              x['name'],
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
+                  QueryDocumentSnapshot x = snapshot.data!.docs[i];
+                  if (x['user'] == currentUserUid) {
+                    return ListTile(
+                      title: Column(
+                        crossAxisAlignment: gettingName == x['name']
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            color: gettingName == x['name']
+                                ? Colors.blue.withOpacity(0.2)
+                                : Colors.amber.withOpacity(0.1),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(x['msg']),
+                                Text(
+                                  x['name'],
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox(); // Return an empty SizedBox if you don't want to display anything for non-matching conditions.
-            },
-            childCount: snapshot.data!.docs.length,
-          ),
+                    );
+                  }
+                  return const SizedBox(); // Return an empty SizedBox if you don't want to display anything for non-matching conditions.
+                },
+                childCount: snapshot.data!.docs.length,
+              ),
+            ),
+          ],
         );
       },
     );
   }
 }
-
-
