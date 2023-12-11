@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishy/Admin/allUsers.dart';
 import 'package:wishy/global/global.dart';
+import 'package:wishy/splashScreen/splashScreen.dart';
 import '../loginPage.dart';
 import 'acceptedServices.dart';
 import 'acceptRequestAdmin.dart';
@@ -133,11 +135,7 @@ class adminDrawer extends StatelessWidget {
                       ),
                     ),
                     onTap: () async {
-                      await firebaseAuth.signOut().then((c) {
-                        Route route =
-                            MaterialPageRoute(builder: (c) => login_page());
-                        Navigator.pushReplacement(context, route);
-                      });
+                      logout(context);
                     },
                   ),
                 ],
@@ -149,11 +147,16 @@ class adminDrawer extends StatelessWidget {
     );
   }
 
-  logout() async {
-    // await firebaseAuth.signOut().then((value){
-    //   Route route = MaterialPageRoute(
-    //     builder: (c) => login_page());
-    //   Navigator.pushReplacement(value, route);
-    // });
+  logout(BuildContext context) async {
+    var pref = await SharedPreferences.getInstance();
+    pref.setBool(MySplashScreenState.ADMINLOGIN, false);
+
+    try {
+      await firebaseAuth.signOut();
+      Route route = MaterialPageRoute(builder: (c) => login_page());
+      Navigator.pushReplacement(context, route);
+    } catch (e) {
+      print("Error during sign out: $e");
+    }
   }
 }

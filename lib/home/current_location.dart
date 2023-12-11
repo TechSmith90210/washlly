@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,20 +26,34 @@ class MapSampleState extends State<MapSample> {
   late GoogleMapController newGoogleMapController;
   late LatLng latLatPostion;
   var user = sharedPreferences?.getString("uid");
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(40.730610, -73.935242),
+    zoom: 14.4744,
+  );
   TextEditingController locationController = TextEditingController();
 
-  void locatePostion() async {
-    bool islocationserviceenabled = await Geolocator.isLocationServiceEnabled();
+  // Add default values for latitude and longitude
+  void locatePostion(
+      {double? defaultLatitude, double? defaultLongitude}) async {
+    bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     await Geolocator.checkPermission();
     await Geolocator.requestPermission();
 
+    // Use default values if parameters are not provided
+    double latitude = defaultLatitude ?? 40.730610;
+    double longitude = defaultLongitude ?? -73.935242;
+
     Position positionNew = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
+      desiredAccuracy: LocationAccuracy.low,
+    );
+
     CurrentPosition = positionNew;
 
     position = positionNew;
-    placemarks =
-        await placemarkFromCoordinates(position!.latitude, position!.longitude);
+    placemarks = await placemarkFromCoordinates(
+      position!.latitude,
+      position!.longitude,
+    );
 
     Placemark Pmark = placemarks![0];
     String newCurrentAddress =
@@ -50,18 +64,13 @@ class MapSampleState extends State<MapSample> {
       locationAssigned = newCurrentAddress.toString();
     });
 
-    latLatPostion = LatLng(positionNew.latitude, positionNew.longitude);
+    latLatPostion = LatLng(latitude, longitude);
 
     CameraPosition cameraPosition =
         CameraPosition(target: latLatPostion, zoom: 14);
     newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(40.730610, -73.935242),
-    zoom: 14.4744,
-  );
 
   late Position CurrentPosition;
   late var geoLocator = Geolocator();
@@ -87,6 +96,9 @@ class MapSampleState extends State<MapSample> {
               onMapCreated: (GoogleMapController controller) {
                 _controllerGoogleMap.complete(controller);
                 newGoogleMapController = controller;
+
+                locatePostion(
+                    defaultLatitude: 37.7749, defaultLongitude: -122.4194);
               },
             ),
           ),
@@ -154,7 +166,19 @@ class MapSampleState extends State<MapSample> {
       "long": position!.longitude,
     });
 
+    // Navigate to Home_page using MaterialPageRoute
     Route route = MaterialPageRoute(builder: (c) => Home_page());
     Navigator.push(context, route);
+    print('Navigated using material page route');
+
+    // Set a delay of 4 seconds
+    await Future.delayed(Duration(seconds: 4));
+
+    // Check if the user has navigated to the Home_page
+    if (!Navigator.canPop(context)) {
+      // If not, navigate to the Home_page using Get.to method
+      print('navigated using Get');
+      Get.to(Home_page());
+    }
   }
 }

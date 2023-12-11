@@ -93,7 +93,7 @@ class _displayingMessage extends State<displayingMessage> {
           .collection("users")
           .doc(currentUserUid.toString())
           .collection("chats")
-          .orderBy("time")
+          .orderBy("time", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

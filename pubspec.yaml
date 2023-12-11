@@ -29,14 +29,16 @@
   dependencies:
     flutter:
       sdk: flutter
-    firebase_core: ^2.20.0
-    cloud_firestore: ^4.12.1
-    firebase_auth: ^4.12.0
+    firebase_core: ^2.24.2
+    cloud_firestore: ^4.13.5
+    firebase_auth: ^4.15.2
+    firebase_messaging: ^14.7.8
     shared_preferences: ^2.0.6
-    fluttertoast: ^8.0.8
+    fluttertoast: ^8.2.4
     location: ^5.0.3
     geocoding: ^2.1.1
-
+    get:
+    xml: ^6.3.0
     flutter_svg: ^2.0.8
     image_picker: ^1.0.4
     firebase_storage: ^11.4.0
@@ -51,13 +53,14 @@
     rflutter_alert: 2.0.7
     flutter_chat_ui: ^1.6.10
     flutter_staggered_grid_view: ^0.7.0
-    flutter_polyline_points: ^2.0.0
+    flutter_polyline_points: 1.0.0
     google_maps_flutter: ^2.5.0
     flutter_clean_calendar: ^1.1.0
     table_calendar: ^3.0.6
     syncfusion_flutter_calendar: ^21.2.3
     firebase_analytics: ^10.6.4
     permission_handler: ^11.0.1
+    search_map_place_updated:
   dev_dependencies:
     flutter_test:
       sdk: flutter

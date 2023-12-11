@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishy/global/global.dart';
 import 'package:wishy/home/chatPage.dart';
+import 'package:wishy/splashScreen/splashScreen.dart';
 import '../loginPage.dart';
 import 'YourBooking.dart';
 import 'aboutUs.dart';
@@ -151,6 +152,8 @@ class myDrawer extends StatelessWidget {
                         await sharedPreferences!.setString("uid", '');
                         await sharedPreferences!.setString("email", '');
                         await sharedPreferences!.setString("FullName", '');
+                        await sharedPreferences!
+                            .setBool(MySplashScreenState.USERLOGIN, false);
                       });
                     },
                   ),

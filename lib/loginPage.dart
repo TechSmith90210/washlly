@@ -2,9 +2,11 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishy/DialogBox/errorDialog.dart';
 import 'package:wishy/DialogBox/loadingDialog.dart';
 import 'package:wishy/global/global.dart';
+import 'package:wishy/splashScreen/splashScreen.dart';
 import 'package:wishy/widgets/customTextField.dart';
 import 'package:wishy/wishy_home.dart';
 import 'Admin/adminLogin.dart';
@@ -136,18 +138,26 @@ class _login_page extends State<login_page> {
     );
   }
 
-  formValidation() {
-    _email.text.isNotEmpty && _password.text.isNotEmpty
-        ? loginUser()
-        : showDialog(
-            context: context,
-            builder: (c) {
-              return const Error_Alert_Dialog(
-                  message: "Please fill the the complete form");
-            });
+  formValidation() async {
+    if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
+      await loginUser();
+      var sharedprefs = await SharedPreferences.getInstance();
+      await sharedprefs.setBool(MySplashScreenState.USERLOGIN, true);
+      var userlogin = await sharedprefs.getBool(MySplashScreenState.USERLOGIN);
+      print("$userlogin");
+    } else {
+      showDialog(
+        context: context,
+        builder: (c) {
+          return const Error_Alert_Dialog(
+            message: "Please fill the complete form",
+          );
+        },
+      );
+    }
   }
 
-  void loginUser() async {
+  loginUser() async {
     showDialog(
         context: context,
         builder: (c) {

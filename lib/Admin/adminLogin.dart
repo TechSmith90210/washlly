@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../DialogBox/errorDialog.dart';
+import '../splashScreen/splashScreen.dart';
 import '../widgets/customTextField.dart';
 import '../widgets/loadingWidget.dart';
 import '../wishy_home.dart';
@@ -118,17 +120,23 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
               height: 25.0,
             ),
             ElevatedButton(
-              onPressed: () {
-                _adminIDTextEditingController.text.isNotEmpty &&
-                        _passwordTextEditingController.text.isNotEmpty
-                    ? loginAdmin()
-                    : showDialog(
-                        context: context,
-                        builder: (c) {
-                          return const Error_Alert_Dialog(
-                            message: "Please Fill up the Email & Password",
-                          );
-                        });
+              onPressed: () async {
+                if (_adminIDTextEditingController.text.isNotEmpty &&
+                    _passwordTextEditingController.text.isNotEmpty) {
+                  var sharedprefs = await SharedPreferences.getInstance();
+                  await sharedprefs.setBool(
+                      MySplashScreenState.ADMINLOGIN, true);
+                  loginAdmin();
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (c) {
+                      return const Error_Alert_Dialog(
+                        message: "Please Fill up the Email & Password",
+                      );
+                    },
+                  );
+                }
               },
               child: const Text(
                 "LOGIN",
