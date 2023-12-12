@@ -79,7 +79,7 @@ class _MyBooking extends State<MyBooking> {
           child: Row(
             children: [
               Image.asset(
-                "assets/img/maintenance4+.png",
+                "assets/img/maintenance4.png",
                 width: 80.0,
                 height: 80.0,
                 color: Colors.white,
