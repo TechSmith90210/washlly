@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,8 @@ class Home_page extends StatefulWidget {
 }
 
 class _Home_page extends State<Home_page> {
+  var currentUser = FirebaseAuth.instance.currentUser;
+  print(currentUser) => throw UnimplementedError();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

@@ -40,8 +40,8 @@ class MySplashScreenState extends State<MySplashScreen> {
     _timer = Timer.periodic(
       const Duration(seconds: 5),
       (timer) async {
-        var adminLoggedIn = sharedpref.getBool(ADMINLOGIN);
-        var userLoggedIn = sharedpref.getBool(USERLOGIN);
+        var adminLoggedIn = sharedpref.getBool(ADMINLOGIN) ?? false;
+        var userLoggedIn = sharedpref.getBool(USERLOGIN) ?? false;
 
         print("Admin Logged In: $adminLoggedIn");
         print("User Logged In: $userLoggedIn");

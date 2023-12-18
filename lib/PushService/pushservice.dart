@@ -1,7 +1,9 @@
 // ignore_for_file: unnecessary_null_comparison
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wishy/home/chatPage.dart';
 
 @pragma('vm:entry-point')
 Future<void> _handleBackgroundMessage(RemoteMessage message) async {
@@ -39,7 +41,17 @@ class FirebaseApi {
 
   Future<void> initNotifications() async {
     // Requesting Permission
-    await _firebaseMessaging.requestPermission();
+    await _firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
 
     // Create the notification channel
     await _flutterLocalNotificationsPlugin
@@ -73,7 +85,7 @@ class FirebaseApi {
               _androidChannel.id,
               _androidChannel.name,
               channelDescription: _androidChannel.description,
-              icon: '@drawable/ic_launcher',
+              icon: "@drawable/maintenance4",
             ),
           ),
           payload: jsonEncode(message.toMap()),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishy/Admin/adminChat.dart';
 import 'package:wishy/Admin/calander.dart';
 import 'package:wishy/Admin/newCalendar.dart';
+import '../global/global.dart';
 import '../home/YourBooking.dart';
 import '../splashScreen/splashScreen.dart';
 import 'acceptedServices.dart';
@@ -14,6 +17,18 @@ import 'allUsers.dart';
 import 'chatBoxAdmin.dart';
 import 'myBooking.dart';
 
+import 'dart:convert';
+
+class FCMHandler {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  Future<void> subscribetoNotifications() async {
+    String token = FirebaseMessaging.instance.getToken().toString();
+    var message =
+        FirebaseMessaging.instance.subscribeToTopic('admin_notifications');
+  }
+}
+
 class adminHomePage extends StatefulWidget {
   const adminHomePage({Key? key}) : super(key: key);
 
@@ -22,6 +37,14 @@ class adminHomePage extends StatefulWidget {
 }
 
 class _adminHomePage extends State<adminHomePage> {
+  final FCMHandler _fcmHandler = FCMHandler();
+
+  @override
+  void initState() {
+    super.initState();
+    _fcmHandler.subscribetoNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

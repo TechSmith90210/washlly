@@ -1,4 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -6,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishy/DialogBox/errorDialog.dart';
+import 'package:http/http.dart' as http;
 
 import '../global/global.dart';
 import '../widgets/loadingWidget.dart';
@@ -166,6 +172,91 @@ class MapSampleState extends State<MapSample> {
       "long": position!.longitude,
     });
 
+    // var currentUser = FirebaseAuth.instance.currentUser;
+    // print(currentUser);
+
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    var name = sharedPreferences?.get("FullName");
+    print(name);
+    print('Notified the admin of the booking');
+    // FirebaseMessaging.instance.subscribeToTopic('admin_notifications');
+    try {
+      // Prepare notification payload
+      final Map<String, dynamic> bookNotificationData = {
+        'notification': {
+          'title': 'New Booking',
+          'body': '$name has booked a new service',
+        },
+        'data': {
+          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+          'id': '1',
+          'status': 'done',
+          'message': 'hello',
+          'bookingDetails': 'new service call',
+        },
+        'to': '/topics/admin_notifications', // Specify the target topic
+      };
+      Future<void> sendNotificationToAdminDevices(
+          Map<String, dynamic> notificationData) async {
+        try {
+          // Subscribe to the admin_notifications topic
+          // await FirebaseMessaging.instance
+          //     .subscribeToTopic('admin_notifications');
+
+          await FirebaseMessaging.instance
+              .unsubscribeFromTopic('admin_notifications');
+
+          // Convert the payload to JSON
+          final String jsonString = jsonEncode(notificationData);
+
+          // Set up the HTTP headers with the FCM server key
+          Map<String, String> headers = {
+            'Content-Type': 'application/json',
+            'Authorization':
+                'key=AAAAozeFQSU:APA91bHZwh8kwUsJMl88XiFnCjro3F2_nyG93xt5UlErtchepco_yFV_R0JEcO3s2CQAp1KQAjFpL98UO9TOAUMrYL4f2fccNdLq79JR7LPAaTni7krOR1Eu2mXJC8IjrkJj0rwi0BZH',
+          };
+
+          // Send HTTP POST request to FCM API
+          final http.Response response = await http.post(
+            Uri.parse('https://fcm.googleapis.com/fcm/send'),
+            headers: headers,
+            body: jsonString,
+          );
+
+          if (response.statusCode == 200) {
+            print(
+                'Notification sent to devices subscribed to admin_notifications');
+
+            // Save notification data in Firestore database
+            await FirebaseFirestore.instance
+                .collection("admins")
+                .doc('admin_id1')
+                .collection('book notifications')
+                .add(notificationData);
+          } else {
+            print(
+                'Failed to send notification. Status code: ${response.statusCode}');
+          }
+        } catch (e) {
+          print('Error sending notification: $e');
+        }
+      }
+
+      // Call sendNotificationToAdminDevices with the notification data
+      await sendNotificationToAdminDevices(bookNotificationData);
+    } catch (e) {
+      print('Error preparing or sending notification: $e');
+    }
+
+    //
+    // await FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(currentUser?.uid)
+    //     .get()
+    //     .then((value) async {
+    //
+    // });
     // Navigate to Home_page using MaterialPageRoute
     Route route = MaterialPageRoute(builder: (c) => Home_page());
     Navigator.push(context, route);
@@ -182,3 +273,20 @@ class MapSampleState extends State<MapSample> {
     }
   }
 }
+
+//
+// Some Logic for sending notification to admin when user books a service
+// For User (Nancy):
+// On Next Button Pressed (choose_location page):
+// Collect Nancy's name.
+// Create a notification or a message payload with Nancy's name.
+// Send this notification to the admin_notifications topic.
+//
+// For Admin:
+// On Login:
+// Subscribe to the admin_notifications topic.
+// This means that when the admin is logged in, they will receive notifications sent to the admin_notifications topic.
+//
+// On Logout:
+// Unsubscribe from the admin_notifications topic.
+// This prevents the admin from receiving notifications when they are not logged in.
