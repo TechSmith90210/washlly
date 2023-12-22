@@ -339,8 +339,8 @@ class _allAcceptedServices extends State<allAcceptedServices> {
           builder: (c) => map(
                 adminlat: position!.latitude,
                 adminlong: position!.longitude,
-                userlat: model.lat!,
-                userlong: model.long!,
+                userlat: model.lat ?? 0.0,
+                userlong: model.long ?? 0.0,
                 name: model.fullName,
               ));
       Navigator.push(context, route);
