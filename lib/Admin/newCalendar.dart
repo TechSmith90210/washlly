@@ -127,9 +127,9 @@ class _TableEventsExampleState extends State<TableEventsExample> {
               padding: EdgeInsets.all(2.0),
               itemBuilder: (BuildContext context, int index) {
                 // final CleanCalendarEvent event = selectedEvent![index];
-                var gettting = snapshot.data!.docs[index]['selected'].toDate();
-                var gettingDay = gettting.day;
-                var gettingMonth = gettting.month;
+                var gettting = snapshot.data!.docs[index]['selected']?.toDate();
+                var gettingDay = gettting?.day;
+                var gettingMonth = gettting?.month;
                 var CurrentId = snapshot.data!.docs[index].id;
                 if (selectedDay.day == gettingDay &&
                     selectedDay.month == gettingMonth) {

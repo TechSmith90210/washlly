@@ -44,3 +44,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# SECRET API KEYS TO SECURE IN ENV FILES
+/lib/secret.env
